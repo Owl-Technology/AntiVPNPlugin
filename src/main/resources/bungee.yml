@@ -1,0 +1,3 @@
+name: AntiVPNPlugin
+version: '${project.version}'
+main: dev.aswitch.antivpnplugin.AntiVPNPlugin
