@@ -7,9 +7,9 @@ import net.md_5.bungee.api.plugin.Plugin;
 import java.util.concurrent.ExecutorService;
 
 @Getter
-public final class AntiVPNPlugin extends Plugin {
+public final class AntiVPNBungee extends Plugin {
 
-    private static AntiVPNPlugin instance;
+    private static AntiVPNBungee instance;
 
     private ExecutorService executorService;
 
