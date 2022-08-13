@@ -1,0 +1,8 @@
+serverID: 'none' #Your server ID will generate here
+kicks:
+  message: "&cProxies/VPNs are not allowed on this server!"
+  enabled: true
+  op-bypass: true
+alerts:
+  enabled: true
+  message: '&8[&cOtter&8] &4%player% &7has joined on a VPN/proxy!'

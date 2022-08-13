@@ -4,11 +4,13 @@ import dev.aswitch.antivpnplugin.api.OtterApi;
 import dev.aswitch.antivpnplugin.api.profile.ProfileManager;
 import dev.aswitch.antivpnplugin.api.utils.Settings;
 import dev.aswitch.antivpnplugin.spigot.commands.OtterCommand;
+import dev.aswitch.antivpnplugin.spigot.events.PlayerJoinEventListener;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -38,6 +40,8 @@ public class AntiVPNSpigot extends JavaPlugin {
 
         getCommand("otter").setExecutor(new OtterCommand());
 
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinEventListener(), this);
+
     }
 
     @Override
@@ -55,6 +59,15 @@ public class AntiVPNSpigot extends JavaPlugin {
 
         Settings.ALERTS_ENABLED = getConfig().getBoolean("alerts.enabled");
         Settings.ALERT_MESSAGE = getConfig().getString("alerts.message");
+
+        if (getConfig().getString("serverID") == null || getConfig().getString("serverID").equals("none")) {
+            String uuid = UUID.randomUUID().toString();
+            getConfig().set("serverID", uuid);
+            saveConfig();
+        }
+
+        Settings.SERVER_ID = (String) getConfig().get("serverID");
+
     }
 
 }

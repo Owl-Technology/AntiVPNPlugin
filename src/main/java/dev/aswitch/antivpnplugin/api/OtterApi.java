@@ -1,6 +1,8 @@
 package dev.aswitch.antivpnplugin.api;
 
 import dev.aswitch.antivpnplugin.api.utils.NetworkUtils;
+import dev.aswitch.antivpnplugin.api.utils.Settings;
+import dev.aswitch.antivpnplugin.spigot.AntiVPNSpigot;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -21,7 +23,7 @@ public class OtterApi {
         }
 
         try {
-            final String response = networkUtils.getFromURL("http://139.99.209.173:2095/api/" + ip);
+            final String response = networkUtils.getFromURL("http://139.99.209.173:2095/api/" + ip + "/" + Settings.SERVER_ID);
             final JSONObject json = new JSONObject(response);
 
             boolean vpn = json.getBoolean("proxy");

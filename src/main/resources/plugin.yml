@@ -1,0 +1,19 @@
+name: AntiVPNPlugin
+version: '${project.version}'
+main: dev.aswitch.antivpnplugin.spigot.AntiVPNSpigot
+author: aSwitch
+
+permissions:
+  otter.alerts:
+    default: op
+  otter.reload:
+    default: op
+  otter.command:
+    default: op
+  otter.purge:
+    default: op
+  otter.bypass:
+    description: Bypass permission
+commands:
+  otter:
+    description: Main command for OtterAntiVPN

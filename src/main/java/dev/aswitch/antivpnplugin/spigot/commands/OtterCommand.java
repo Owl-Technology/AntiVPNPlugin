@@ -2,13 +2,12 @@ package dev.aswitch.antivpnplugin.spigot.commands;
 
 import dev.aswitch.antivpnplugin.api.profile.Profile;
 import dev.aswitch.antivpnplugin.api.utils.ChatUtils;
+import dev.aswitch.antivpnplugin.api.utils.Settings;
 import dev.aswitch.antivpnplugin.spigot.AntiVPNSpigot;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import xyz.owltech.otter.spigot.OtterAntiVPN;
-import xyz.owltech.otter.utils.ChatUtils;
 
 public class OtterCommand implements CommandExecutor {
 
@@ -63,6 +62,11 @@ public class OtterCommand implements CommandExecutor {
                         break;
                     }
 
+                    case "serverid": {
+                        sender.sendMessage(ChatUtils.colour("&7Your serverID is &e" + Settings.SERVER_ID));
+                        break;
+                    }
+
                     default: {
                         help(sender);
                         break;
@@ -78,17 +82,20 @@ public class OtterCommand implements CommandExecutor {
 
     private void help(CommandSender sender) {
         sender.sendMessage(ChatUtils.colour("&7&m----------------------------------"));
-        sender.sendMessage(ChatUtils.colour("&cOtter"
-                + " [v" + AntiVPNSpigot.getInstance().getDescription().getVersion() + "]"));
+        sender.sendMessage(ChatUtils.colour("&eOtter"
+                + " &7[&ev" + AntiVPNSpigot.getInstance().getDescription().getVersion() + "&7]"));
         sender.sendMessage(ChatUtils.colour("&7&m----------------------------------"));
         sender.sendMessage(ChatUtils.colour("&7/otter alerts"));
-        sender.sendMessage(ChatUtils.colour("&8 -> &cToggles your alerts."));
+        sender.sendMessage(ChatUtils.colour("&8 -> &eToggles your alerts."));
         sender.sendMessage(ChatUtils.colour(""));
         sender.sendMessage(ChatUtils.colour("&7/otter reload"));
-        sender.sendMessage(ChatUtils.colour("&8 -> &cReloads the plugin configuration."));
+        sender.sendMessage(ChatUtils.colour("&8 -> &eReloads the plugin configuration."));
         sender.sendMessage(ChatUtils.colour(""));
         sender.sendMessage(ChatUtils.colour("&7/otter purge"));
-        sender.sendMessage(ChatUtils.colour("&8 -> &cDeletes all IP cache's."));
+        sender.sendMessage(ChatUtils.colour("&8 -> &eDeletes all IP cache's."));
+        sender.sendMessage(ChatUtils.colour(""));
+        sender.sendMessage(ChatUtils.colour("&7/otter serverid"));
+        sender.sendMessage(ChatUtils.colour("&8 -> &eShows your server ID."));
         sender.sendMessage(ChatUtils.colour("&7&m----------------------------------"));
     }
 

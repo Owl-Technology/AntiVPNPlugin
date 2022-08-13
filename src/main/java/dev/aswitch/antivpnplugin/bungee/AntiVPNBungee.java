@@ -18,7 +18,7 @@ public final class AntiVPNBungee extends Plugin {
 
     @Override
     public void onEnable() {
-
+        System.out.println("[Otter] we currently do not support bungeecord");
     }
 
     @Override

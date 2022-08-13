@@ -11,4 +11,6 @@ public class Settings {
     public static boolean ALERTS_ENABLED = true;
     public static String ALERT_MESSAGE = "&8[&cOtter&8] &4%player% &7has joined on a VPN/proxy!";
 
+    public static String SERVER_ID = "";
+
 }
