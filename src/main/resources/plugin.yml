@@ -1,4 +1,4 @@
-name: AntiVPNPlugin
+name: OtterAntiVPN
 version: '${project.version}'
 main: dev.aswitch.antivpnplugin.spigot.AntiVPNSpigot
 author: aSwitch
