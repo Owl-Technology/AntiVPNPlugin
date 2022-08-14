@@ -5,4 +5,9 @@ kicks:
   op-bypass: true
 alerts:
   enabled: true
-  message: '&8[&cOtter&8] &4%player% &7has joined on a VPN/proxy!'
+  message: '&7[&eOtter&7] &f%player% &7has joined on a VPN/proxy!'
+
+ipLimiter:
+  enabled: true
+  limit: 3
+

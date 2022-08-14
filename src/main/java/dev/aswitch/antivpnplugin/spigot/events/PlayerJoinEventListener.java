@@ -1,5 +1,6 @@
 package dev.aswitch.antivpnplugin.spigot.events;
 
+import dev.aswitch.antivpnplugin.api.ipsession.IpSession;
 import dev.aswitch.antivpnplugin.api.profile.Profile;
 import dev.aswitch.antivpnplugin.api.utils.ChatUtils;
 import dev.aswitch.antivpnplugin.api.utils.Settings;
@@ -16,50 +17,71 @@ public class PlayerJoinEventListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerLoginEvent event) {
-        Bukkit.getScheduler().runTask(AntiVPNSpigot.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                boolean vpn = AntiVPNSpigot.getInstance().getOtterApi().check(event.getAddress().getHostAddress());
-                if (vpn) {
+        final Player player = event.getPlayer();
+        final String ip = event.getAddress().getHostAddress();
 
-                    final String message = ChatUtils.colour(Settings.ALERT_MESSAGE.replaceAll("%player%", event.getPlayer().getName()));
-                    if (Settings.ALERTS_ENABLED) {
-                        Bukkit.getConsoleSender().sendMessage(message);
+        AntiVPNSpigot.getInstance().getProfileManager().add(player.getUniqueId());
 
-                        AntiVPNSpigot.getInstance().getProfileManager().toList().stream().filter(Profile::isAlerts).forEach(profile -> {
-                            Player player = Bukkit.getPlayer(profile.getUuid());
-                            if (player != null) {
-                                player.sendMessage(message);
-                            }
-                        });
+        final Profile profile = AntiVPNSpigot.getInstance().getProfileManager().get(player.getUniqueId());
+        IpSession ipSession = AntiVPNSpigot.getInstance().getIpSessionManager().get(ip);
 
-                    }
+        if (ipSession == null) {
+            AntiVPNSpigot.getInstance().getIpSessionManager().add(ip, profile);
+            ipSession = AntiVPNSpigot.getInstance().getIpSessionManager().get(ip);
+        }
 
-                    if (Settings.KICK_PLAYERS
-                            && !(Settings.OP_BYPASS && event.getPlayer().isOp())
-                            && !event.getPlayer().hasPermission("otter.bypass")) {
+        // Checks if too many people are connected to the same IP
+        if (ipSession.getConnected().size() > Settings.MAX_IP_CONNECTIONS) {
+            kick(player, "Ip connection limit reached!");
+            return;
+        }
 
-                        Bukkit.getScheduler().runTask(AntiVPNSpigot.getInstance(), new Runnable() {
-                            @Override
-                            public void run() {
-                                event.getPlayer().kickPlayer(ChatUtils.colour(Settings.KICK_MESSAGE));
-                            }
-                        });
+        profile.setIpSession(ipSession);
+        ipSession.getConnected().add(profile);
 
-                    }
+        // Checks if the player is using a vpn.
+        final boolean vpn = AntiVPNSpigot.getInstance().getOtterApi().check(ip);
+        if (vpn) {
+            final String message = ChatUtils.colour(Settings.ALERT_MESSAGE.replaceAll("%player%", player.getName()));
+            if (Settings.ALERTS_ENABLED) {
+                Bukkit.getConsoleSender().sendMessage(message);
+
+                // Looks stupid but its faster.
+                for (int i = 0; i < AntiVPNSpigot.getInstance().getProfileManager().toList().size(); i++) {
+                    Profile staff = AntiVPNSpigot.getInstance().getProfileManager().toList().get(i);
+                    if (staff == null) continue;
+
+                    staff.getPlayer().sendMessage(message);
+
                 }
-            }
-        });
-    }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        AntiVPNSpigot.getInstance().getProfileManager().add(event.getPlayer().getUniqueId());
+            }
+        }
+
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
+        final Profile profile = AntiVPNSpigot.getInstance().getProfileManager().get(event.getPlayer().getUniqueId());
+        profile.getIpSession().getConnected().remove(profile);
+
         AntiVPNSpigot.getInstance().getProfileManager().remove(event.getPlayer().getUniqueId());
+    }
+
+
+    public void kick(Player player, String message) {
+        if (Settings.KICK_PLAYERS
+                && !(Settings.OP_BYPASS && player.isOp())
+                && !player.hasPermission("otter.bypass")) {
+            Bukkit.getScheduler().runTask(AntiVPNSpigot.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    player.kickPlayer(ChatUtils.colour(message));
+                }
+            });
+        }
+
+
     }
 
 }

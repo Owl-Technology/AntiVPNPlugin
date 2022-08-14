@@ -1,6 +1,7 @@
 package dev.aswitch.antivpnplugin.spigot;
 
 import dev.aswitch.antivpnplugin.api.OtterApi;
+import dev.aswitch.antivpnplugin.api.ipsession.IpSessionManager;
 import dev.aswitch.antivpnplugin.api.profile.ProfileManager;
 import dev.aswitch.antivpnplugin.api.utils.Settings;
 import dev.aswitch.antivpnplugin.spigot.commands.OtterCommand;
@@ -8,6 +9,7 @@ import dev.aswitch.antivpnplugin.spigot.events.PlayerJoinEventListener;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
@@ -23,11 +25,16 @@ public class AntiVPNSpigot extends JavaPlugin {
     private ExecutorService executorService;
     private OtterApi otterApi;
     private ProfileManager profileManager;
+    private IpSessionManager ipSessionManager;
+
+    private PluginLogger pluginLogger;
 
     @Override
     public void onEnable() {
         instance = this;
+        pluginLogger = getPluginLogger();
         otterApi = new OtterApi();
+        ipSessionManager = new IpSessionManager();
         executorService = Executors.newSingleThreadExecutor();
         profileManager = new ProfileManager();
 
@@ -51,7 +58,6 @@ public class AntiVPNSpigot extends JavaPlugin {
 
     public void loadConfigSettings() {
         reloadConfig();
-        Settings.LICENSE = getConfig().getString("license");
 
         Settings.KICK_MESSAGE = getConfig().getString("kicks.message");
         Settings.KICK_PLAYERS = getConfig().getBoolean("kicks.enabled");
