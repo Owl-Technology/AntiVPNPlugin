@@ -50,6 +50,9 @@ public class PlayerJoinEventListener implements Listener {
         // Checks if the player is using a vpn.
         final boolean vpn = AntiVPNSpigot.getInstance().getOtterApi().check(ip);
         if (vpn) {
+
+            kick(player, Settings.KICK_MESSAGE);
+
             final String message = ChatUtils.colour(Settings.ALERT_MESSAGE.replaceAll("%player%", player.getName()));
             if (Settings.ALERTS_ENABLED) {
                 Bukkit.getConsoleSender().sendMessage(message);

@@ -1,13 +1,19 @@
-serverID: 'none' #Your server ID will generate here
+# Use this ID to help the developers find the problem
+serverID: 'none'
+
+# Configure kick messages for joining on a vpn/proxy
 kicks:
   message: "&cProxies/VPNs are not allowed on this server!"
   enabled: true
   op-bypass: true
+
+# Configure alert messages
 alerts:
   enabled: true
+  console: true # Should send alert messages to console
   message: '&7[&eOtter&7] &f%player% &7has joined on a VPN/proxy!'
 
 ipLimiter:
   enabled: true
-  limit: 3
+  limit: 2
 
