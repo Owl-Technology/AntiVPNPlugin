@@ -15,6 +15,6 @@ public class Settings {
      * Ip limiting settings
      */
 
-    public static int MAX_IP_CONNECTIONS = 1;
+    public static int MAX_IP_CONNECTIONS = 2;
 
 }

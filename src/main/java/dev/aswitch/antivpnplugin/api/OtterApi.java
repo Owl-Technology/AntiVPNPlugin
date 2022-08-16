@@ -2,7 +2,6 @@ package dev.aswitch.antivpnplugin.api;
 
 import dev.aswitch.antivpnplugin.api.utils.NetworkUtils;
 import dev.aswitch.antivpnplugin.api.utils.Settings;
-import dev.aswitch.antivpnplugin.spigot.AntiVPNSpigot;
 import org.json.JSONObject;
 
 import java.util.HashMap;

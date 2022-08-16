@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Profile {
 
     private final UUID uuid;
-    private final Player player;
+    private Player player;
     private boolean alerts;
 
     @Setter
@@ -28,4 +28,19 @@ public class Profile {
         alerts = !alerts;
         return alerts;
     }
+
+    public String getIp() {
+        Player user = Bukkit.getPlayer(uuid);
+
+        if (player == null) {
+            player = user;
+        }
+
+        if (user == null) {
+            return null;
+        }
+
+        return user.getAddress().getAddress().getHostAddress();
+    }
+
 }

@@ -1,7 +1,9 @@
 package dev.aswitch.antivpnplugin.spigot;
 
 import dev.aswitch.antivpnplugin.api.OtterApi;
+import dev.aswitch.antivpnplugin.api.ipsession.IpSession;
 import dev.aswitch.antivpnplugin.api.ipsession.IpSessionManager;
+import dev.aswitch.antivpnplugin.api.profile.Profile;
 import dev.aswitch.antivpnplugin.api.profile.ProfileManager;
 import dev.aswitch.antivpnplugin.api.utils.Settings;
 import dev.aswitch.antivpnplugin.spigot.commands.OtterCommand;
@@ -43,6 +45,18 @@ public class AntiVPNSpigot extends JavaPlugin {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             profileManager.add(player.getUniqueId());
+
+            Profile profile = profileManager.get(player.getUniqueId());
+            String ip = player.getAddress().getAddress().getHostAddress();
+
+            IpSession ipSession = AntiVPNSpigot.getInstance().getIpSessionManager().get(ip);
+            if (ipSession == null) {
+                AntiVPNSpigot.getInstance().getIpSessionManager().add(ip, profile);
+                ipSession = AntiVPNSpigot.getInstance().getIpSessionManager().get(ip);
+            } else {
+                ipSession.getConnected().add(profile);
+            }
+            profile.setIpSession(ipSession);
         }
 
         getCommand("otter").setExecutor(new OtterCommand());

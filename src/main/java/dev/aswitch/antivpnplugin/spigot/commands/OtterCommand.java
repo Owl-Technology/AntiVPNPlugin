@@ -4,6 +4,7 @@ import dev.aswitch.antivpnplugin.api.profile.Profile;
 import dev.aswitch.antivpnplugin.api.utils.ChatUtils;
 import dev.aswitch.antivpnplugin.api.utils.Settings;
 import dev.aswitch.antivpnplugin.spigot.AntiVPNSpigot;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -63,7 +64,67 @@ public class OtterCommand implements CommandExecutor {
                     }
 
                     case "serverid": {
-                        sender.sendMessage(ChatUtils.colour("&7Your serverID is &e" + Settings.SERVER_ID));
+                        if (sender.hasPermission("otter.serverid")) {
+                            sender.sendMessage(ChatUtils.colour("&7Your serverID is &e" + Settings.SERVER_ID));
+                        } else {
+                            sender.sendMessage(ChatUtils.colour("&cYou do not have permission to do this command"));
+                        }
+                        break;
+                    }
+
+                    case "check": {
+                        if (sender.hasPermission("otter.check")) {
+
+                            if (args.length <= 1) {
+                                sender.sendMessage(ChatUtils.colour("&c/otter check <user>"));
+                            } else {
+
+                                String input = args[1];
+
+                                Player player = Bukkit.getPlayer(input);
+                                if (player == null) {
+                                    sender.sendMessage(ChatUtils.colour("&cPlayer not found"));
+                                } else {
+                                    Profile profile = AntiVPNSpigot.getInstance().getProfileManager().get(player.getUniqueId());
+
+                                    if (profile == null) {
+                                        sender.sendMessage(ChatUtils.colour("&cPlayer not found"));
+                                    } else {
+
+                                        String ip = profile.getIp();
+                                        boolean vpn = AntiVPNSpigot.getInstance().getOtterApi().check(ip);
+
+                                        StringBuilder players = new StringBuilder();
+
+                                        for (Profile profile1 : profile.getIpSession().getConnected()) {
+                                            if (profile1.getUuid() != profile.getUuid()) {
+                                                Player player1 = Bukkit.getPlayer(profile1.getUuid());
+                                                if (player1 == null) {
+                                                    continue;
+                                                }
+                                                players.append(profile1.getPlayer().getName()).append(" ");
+                                            }
+                                        }
+
+                                        if (players.toString().equals("")) {
+                                            players = new StringBuilder("none");
+                                        }
+
+                                        sender.sendMessage(ChatUtils.colour("&7&m                                       "));
+                                        sender.sendMessage(ChatUtils.colour("&3&lChecking " + player.getName()));
+                                        sender.sendMessage(ChatUtils.colour(""));
+                                        sender.sendMessage(ChatUtils.colour("&7VPN: &b" + vpn));
+                                        sender.sendMessage(ChatUtils.colour("&7Players with the same IP: &b" + players));
+                                        sender.sendMessage(ChatUtils.colour("&7&m                                       "));
+
+                                    }
+
+                                }
+                            }
+
+                        } else {
+                            sender.sendMessage(ChatUtils.colour("&cYou do not have permission to do this command"));
+                        }
                         break;
                     }
 
@@ -81,10 +142,10 @@ public class OtterCommand implements CommandExecutor {
     }
 
     private void help(CommandSender sender) {
-        sender.sendMessage(ChatUtils.colour("&7&m----------------------------------"));
+        sender.sendMessage(ChatUtils.colour("&7&m                                       "));
         sender.sendMessage(ChatUtils.colour("&eOtter"
                 + " &7[&ev" + AntiVPNSpigot.getInstance().getDescription().getVersion() + "&7]"));
-        sender.sendMessage(ChatUtils.colour("&7&m----------------------------------"));
+        sender.sendMessage(ChatUtils.colour("&7&m                                       "));
         sender.sendMessage(ChatUtils.colour("&7/otter alerts"));
         sender.sendMessage(ChatUtils.colour("&8 -> &eToggles your alerts."));
         sender.sendMessage(ChatUtils.colour(""));
@@ -96,7 +157,10 @@ public class OtterCommand implements CommandExecutor {
         sender.sendMessage(ChatUtils.colour(""));
         sender.sendMessage(ChatUtils.colour("&7/otter serverid"));
         sender.sendMessage(ChatUtils.colour("&8 -> &eShows your server ID."));
-        sender.sendMessage(ChatUtils.colour("&7&m----------------------------------"));
+        sender.sendMessage(ChatUtils.colour(""));
+        sender.sendMessage(ChatUtils.colour("&7/otter check <username>"));
+        sender.sendMessage(ChatUtils.colour("&8 -> &eDisplays a player's online alts."));
+        sender.sendMessage(ChatUtils.colour("&7&m                                       "));
     }
 
 }
