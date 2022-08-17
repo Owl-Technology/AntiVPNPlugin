@@ -111,10 +111,10 @@ public class OtterCommand implements CommandExecutor {
                                         }
 
                                         sender.sendMessage(ChatUtils.colour("&7&m                                       "));
-                                        sender.sendMessage(ChatUtils.colour("&3&lChecking " + player.getName()));
+                                        sender.sendMessage(ChatUtils.colour("&e&lChecking " + player.getName()));
                                         sender.sendMessage(ChatUtils.colour(""));
-                                        sender.sendMessage(ChatUtils.colour("&7VPN: &b" + vpn));
-                                        sender.sendMessage(ChatUtils.colour("&7Players with the same IP: &b" + players));
+                                        sender.sendMessage(ChatUtils.colour("&7VPN: &f" + vpn));
+                                        sender.sendMessage(ChatUtils.colour("&7Players with the same IP: &f" + players));
                                         sender.sendMessage(ChatUtils.colour("&7&m                                       "));
 
                                     }

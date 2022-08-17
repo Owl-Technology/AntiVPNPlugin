@@ -79,12 +79,17 @@ public class AntiVPNSpigot extends JavaPlugin {
 
         Settings.ALERTS_ENABLED = getConfig().getBoolean("alerts.enabled");
         Settings.ALERT_MESSAGE = getConfig().getString("alerts.message");
+        Settings.CONSOLE_ALERTS = getConfig().getBoolean("alerts.console");
 
         if (getConfig().getString("serverID") == null || getConfig().getString("serverID").equals("none")) {
             String uuid = UUID.randomUUID().toString();
             getConfig().set("serverID", uuid);
             saveConfig();
         }
+
+        Settings.MAX_IP_CONNECTIONS = getConfig().getInt("ipLimiter.limit");
+        Settings.IP_LIMIT_KICK_MESSAGE = getConfig().getString("ipLimiter.kick-message");
+        Settings.IP_LIMIT_ENABLED = getConfig().getBoolean("ipLimiter.enabled");
 
         Settings.SERVER_ID = (String) getConfig().get("serverID");
 

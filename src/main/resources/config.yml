@@ -10,10 +10,12 @@ kicks:
 # Configure alert messages
 alerts:
   enabled: true
-  console: true # Should send alert messages to console
+  console: true
   message: '&7[&eOtter&7] &f%player% &7has joined on a VPN/proxy!'
 
+# Configure Ip limitations
 ipLimiter:
   enabled: true
   limit: 2
+  kick-message: "&cIp connection limit reached!"
 

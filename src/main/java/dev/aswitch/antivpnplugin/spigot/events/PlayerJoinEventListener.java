@@ -9,19 +9,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerJoinEventListener implements Listener {
 
-    @EventHandler
-    public void onPreJoin(AsyncPlayerPreLoginEvent event) {
-        
-
-
-    }
+//    @EventHandler
+//    public void onPreJoin(AsyncPlayerPreLoginEvent event) {
+//
+//
+//
+//    }
 
     @EventHandler
     public void onJoin(PlayerLoginEvent event) {
@@ -38,10 +36,12 @@ public class PlayerJoinEventListener implements Listener {
             ipSession = AntiVPNSpigot.getInstance().getIpSessionManager().get(ip);
         }
 
-        // Checks if too many people are connected to the same IP
-        if (ipSession.getConnected().size() > Settings.MAX_IP_CONNECTIONS) {
-            kick(player, "Ip connection limit reached!");
-            return;
+        if (Settings.IP_LIMIT_ENABLED) {
+            // Checks if too many people are connected to the same IP
+            if (ipSession.getConnected().size() > Settings.MAX_IP_CONNECTIONS) {
+                kick(player, Settings.IP_LIMIT_KICK_MESSAGE);
+                return;
+            }
         }
 
         profile.setIpSession(ipSession);
@@ -55,7 +55,9 @@ public class PlayerJoinEventListener implements Listener {
 
             final String message = ChatUtils.colour(Settings.ALERT_MESSAGE.replaceAll("%player%", player.getName()));
             if (Settings.ALERTS_ENABLED) {
-                Bukkit.getConsoleSender().sendMessage(message);
+                if (Settings.CONSOLE_ALERTS) {
+                    Bukkit.getConsoleSender().sendMessage(message);
+                }
 
                 // Looks stupid but its faster.
                 for (int i = 0; i < AntiVPNSpigot.getInstance().getProfileManager().toList().size(); i++) {
