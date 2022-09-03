@@ -73,25 +73,25 @@ public class AntiVPNSpigot extends JavaPlugin {
     public void loadConfigSettings() {
         reloadConfig();
 
-        Settings.KICK_MESSAGE = getConfig().getString("kicks.message");
-        Settings.KICK_PLAYERS = getConfig().getBoolean("kicks.enabled");
-        Settings.OP_BYPASS = getConfig().getBoolean("kicks.op-bypass");
-
-        Settings.ALERTS_ENABLED = getConfig().getBoolean("alerts.enabled");
-        Settings.ALERT_MESSAGE = getConfig().getString("alerts.message");
-        Settings.CONSOLE_ALERTS = getConfig().getBoolean("alerts.console");
-
-        if (getConfig().getString("serverID") == null || getConfig().getString("serverID").equals("none")) {
+        if (getConfig().getString("license") == null || getConfig().getString("license").equals("none")) {
             String uuid = UUID.randomUUID().toString();
-            getConfig().set("serverID", uuid);
+            getConfig().set("license", uuid);
             saveConfig();
         }
 
-        Settings.MAX_IP_CONNECTIONS = getConfig().getInt("ipLimiter.limit");
-        Settings.IP_LIMIT_KICK_MESSAGE = getConfig().getString("ipLimiter.kick-message");
-        Settings.IP_LIMIT_ENABLED = getConfig().getBoolean("ipLimiter.enabled");
+        Settings.LICENSE = getConfig().getString("license");
 
-        Settings.SERVER_ID = (String) getConfig().get("serverID");
+        Settings.ALERTS_ENABLED = getConfig().getBoolean("antiVPN.alerts.enabled");
+        Settings.CONSOLE_ALERTS = getConfig().getBoolean("antiVPN.alerts.console");
+        Settings.ALERT_MESSAGE = getConfig().getString("antiVPN.punishment.message");
+
+        Settings.KICK_PLAYERS = getConfig().getBoolean("antiVPN.punishment.enabled");
+        Settings.OP_BYPASS = getConfig().getBoolean("antiVPN.punishment.enabled");
+        Settings.KICK_MESSAGE = getConfig().getString("antiVPN.punishment.message");
+
+        Settings.IP_LIMIT_ENABLED = getConfig().getBoolean("ipLimiter.enabled");
+        Settings.MAX_IP_CONNECTIONS = getConfig().getInt("ipLimiter.limit");
+        Settings.IP_LIMIT_KICK_MESSAGE = getConfig().getString("ipLimiter.message");
 
     }
 

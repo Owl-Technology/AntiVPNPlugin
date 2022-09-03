@@ -20,7 +20,6 @@ public class Profile {
 
     public Profile(UUID uuid) {
         this.uuid = uuid;
-        this.player = Bukkit.getPlayer(uuid);
         this.alerts = true;
     }
 

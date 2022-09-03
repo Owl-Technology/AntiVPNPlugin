@@ -22,7 +22,7 @@ public class OtterApi {
         }
 
         try {
-            final String response = networkUtils.getFromURL("http://139.99.209.173:2095/api/" + ip + "/" + Settings.SERVER_ID);
+            final String response = networkUtils.getFromURL("https://owltech.digital/api/" + Settings.LICENSE + "/" + ip);
             final JSONObject json = new JSONObject(response);
 
             boolean vpn = json.getBoolean("proxy");

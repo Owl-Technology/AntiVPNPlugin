@@ -1,4 +1,4 @@
-name: OtterAntiVPN
+name: OwlAntiVPN
 version: '${project.version}'
 main: dev.aswitch.antivpnplugin.spigot.AntiVPNSpigot
 author: aSwitch
@@ -15,5 +15,7 @@ permissions:
   otter.bypass:
     description: Bypass permission
 commands:
-  otter:
-    description: Main command for OtterAntiVPN
+  owl:
+    aliases:
+      - vpn
+    description: Main command for OwlAntiVPN

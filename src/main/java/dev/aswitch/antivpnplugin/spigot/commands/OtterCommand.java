@@ -65,7 +65,7 @@ public class OtterCommand implements CommandExecutor {
 
                     case "serverid": {
                         if (sender.hasPermission("otter.serverid")) {
-                            sender.sendMessage(ChatUtils.colour("&7Your serverID is &e" + Settings.SERVER_ID));
+                            sender.sendMessage(ChatUtils.colour("&7Your serverID is &e" + Settings.LICENSE));
                         } else {
                             sender.sendMessage(ChatUtils.colour("&cYou do not have permission to do this command"));
                         }
